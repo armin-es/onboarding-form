@@ -10,6 +10,11 @@ This application is an onboarding form where users enter personal and business d
 - Phone Number: Validated for Canadian numbers only
 - Corporation Number: Asynchronously validated via API (9 characters)
 
+
+## Video Demo
+
+https://www.loom.com/share/1cfea987c9274b878eb6c6b4956a96c0
+
 ## Key Features
 
 - Multi-step wizard architecture (extensible for additional steps)
