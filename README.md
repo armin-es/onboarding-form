@@ -1,0 +1,112 @@
+# Venn Onboarding Form
+
+A production-ready, multi-step onboarding form built with React, TypeScript, and modern web technologies.
+
+## Overview
+
+This application is an onboarding form where users enter personal and business details:
+
+- Personal Information: First name, last name (max 50 chars each)
+- Phone Number: Validated for Canadian numbers only
+- Corporation Number: Asynchronously validated via API (9 characters)
+
+## Key Features
+
+- Multi-step wizard architecture (extensible for additional steps)
+- Comprehensive form validation with real-time error messages
+- Data persistence when navigating between steps
+- Performance optimized: code splitting, lazy loading, React Query caching
+- Accessibility: ARIA labels, keyboard navigation, screen reader support
+- Production-ready: environment variables, type-safe, comprehensive tests
+
+## Tech Stack
+
+- React 19 + TypeScript
+- Vite
+- React Hook Form + Zod
+- TanStack Query
+- Axios
+- Tailwind CSS v4
+- Vitest + React Testing Library
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18 or higher
+- pnpm (recommended) or npm/yarn
+
+### Installation
+
+```bash
+pnpm install
+pnpm dev
+pnpm test
+pnpm build
+```
+
+### Environment Setup
+
+Create a `.env` file:
+
+```env
+VITE_API_BASE_URL=https://fe-hometask-api.qa.vault.tryvault.com
+```
+
+## Project Structure
+
+```
+src/
+├── components/ui/          # Reusable UI primitives
+├── features/onboarding/    # Feature module
+│   ├── api/               # API service functions
+│   ├── components/        # Feature components
+│   ├── hooks/             # Custom React hooks
+│   ├── schema.ts          # Zod validation schemas
+│   └── types/             # TypeScript types
+├── lib/                   # Third-party configurations
+└── utils/                 # Shared utilities
+```
+
+## Architecture
+
+The codebase follows a feature-based architecture where related functionality is grouped together.
+
+### Validation Strategy
+
+Phone Number Validation (separate checks):
+
+1. Format: Must start with `+1` and contain exactly 10 digits
+2. Area Code: Must be a valid Canadian area code
+
+Corporation Number Validation:
+
+- Synchronous: Length check (9 characters)
+- Asynchronous: API validation with React Query caching (30min staleTime)
+
+### Performance
+
+- Code splitting: Success step is lazy-loaded
+- React Query caching: Prevents redundant API calls
+- Minimal dependencies: No unnecessary bloat
+
+## Testing
+
+Comprehensive integration tests cover form validation, async API validation, multi-step navigation, error handling, and data persistence. Run with `pnpm test`.
+
+## API Integration
+
+**Validate Corporation Number** (GET)
+
+```http
+GET /corporation-number/{number}
+```
+
+**Submit Profile** (POST)
+
+```http
+POST /profile-details
+Body: { firstName, lastName, phone, corporationNumber }
+```
+
+API errors are displayed inline with proper error handling. All errors are typed with Zod schemas.
