@@ -50,11 +50,6 @@ describe('PersonalDetailsStep', () => {
     expect(screen.getByRole('button', { name: /Submit/i })).toBeInTheDocument();
   });
 
-  it('disables submit button initially', () => {
-    renderWithClient(<PersonalDetailsStep onNext={onNextMock} />);
-    expect(screen.getByRole('button', { name: /Submit/i })).toBeDisabled();
-  });
-
   it('validates required fields on blur', async () => {
     renderWithClient(<PersonalDetailsStep onNext={onNextMock} />);
     

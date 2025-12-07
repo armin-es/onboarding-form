@@ -152,7 +152,6 @@ export const PersonalDetailsStep: React.FC<PersonalDetailsStepProps> = ({
           type="submit" 
           className="w-full mt-2 bg-black hover:bg-gray-800 text-white rounded-md h-12 text-base"
           isLoading={isSubmitting || isSubmitPending}
-          disabled={!isValid}
         >
           Submit <ArrowRight className="ml-2 h-4 w-4" />
         </Button>
