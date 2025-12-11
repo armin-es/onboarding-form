@@ -1,11 +1,6 @@
-import { apiClient } from '../../../lib/axios';
-import {
-  CorporationValidationResponseSchema,
-} from '../types';
-import type {
-  CorporationValidationResponse,
-  ProfileDetails,
-} from '../types';
+import { apiClient } from "../../../lib/axios";
+import { CorporationValidationResponseSchema } from "../types";
+import type { CorporationValidationResponse, ProfileDetails } from "../types";
 
 export const validateCorporationNumber = async (
   number: string
@@ -15,8 +10,6 @@ export const validateCorporationNumber = async (
   return CorporationValidationResponseSchema.parse(data);
 };
 
-export const submitProfile = async (
-  details: ProfileDetails
-): Promise<void> => {
-  await apiClient.post('/profile-details', details);
+export const submitProfile = async (details: ProfileDetails): Promise<void> => {
+  await apiClient.post("/profile-details", details);
 };
