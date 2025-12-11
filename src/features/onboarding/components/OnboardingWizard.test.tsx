@@ -1,4 +1,5 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { OnboardingWizard } from './OnboardingWizard';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -34,6 +35,8 @@ describe('OnboardingWizard', () => {
   });
 
   it('navigates to success step and supports back button', async () => {
+    const user = userEvent.setup();
+    
     // Mock valid form submission
     vi.mocked(api.validateCorporationNumber).mockResolvedValue({
       valid: true,
@@ -46,23 +49,17 @@ describe('OnboardingWizard', () => {
     // Verify Step 1 is shown
     expect(screen.getByText(/Step 1 of 5/i)).toBeInTheDocument();
 
-    // Fill form to valid state
-    fireEvent.change(screen.getByLabelText(/First Name/i), { target: { value: 'John' } });
-    fireEvent.change(screen.getByLabelText(/Last Name/i), { target: { value: 'Doe' } });
-    fireEvent.change(screen.getByLabelText(/Phone Number/i), { target: { value: '+13062776103' } });
-    fireEvent.change(screen.getByLabelText(/Corporation Number/i), { target: { value: '123456789' } });
-    
-    // Blur to validate
-    fireEvent.blur(screen.getByLabelText(/First Name/i));
-    fireEvent.blur(screen.getByLabelText(/Last Name/i));
-    fireEvent.blur(screen.getByLabelText(/Phone Number/i));
-    fireEvent.blur(screen.getByLabelText(/Corporation Number/i));
+    // Fill form - userEvent.type automatically handles focus, typing, and blur (triggers validation)
+    await user.type(screen.getByLabelText(/First Name/i), 'John');
+    await user.type(screen.getByLabelText(/Last Name/i), 'Doe');
+    await user.type(screen.getByLabelText(/Phone Number/i), '+13062776103');
+    await user.type(screen.getByLabelText(/Corporation Number/i), '123456789');
 
-    // Wait for button to enable
+    // Wait for button to enable (validation has been triggered by userEvent.type blur)
     await waitFor(() => expect(screen.getByRole('button', { name: /Submit/i })).not.toBeDisabled());
 
     // Submit
-    fireEvent.click(screen.getByRole('button', { name: /Submit/i }));
+    await user.click(screen.getByRole('button', { name: /Submit/i }));
 
     // Verify navigation to Step 2 (Success Screen)
     await waitFor(() => {
@@ -72,7 +69,7 @@ describe('OnboardingWizard', () => {
     });
 
     // Click Back Button
-    fireEvent.click(screen.getByRole('button', { name: /Back to Step 1/i }));
+    await user.click(screen.getByRole('button', { name: /Back to Step 1/i }));
 
     // Should be back on Step 1
     await waitFor(() => {
