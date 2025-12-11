@@ -10,7 +10,6 @@ This application is an onboarding form where users enter personal and business d
 - Phone Number: Validated for Canadian numbers only
 - Corporation Number: Asynchronously validated via API (9 characters)
 
-
 ## Video Demo
 
 https://www.loom.com/share/1cfea987c9274b878eb6c6b4956a96c0
@@ -97,7 +96,34 @@ Corporation Number Validation:
 
 ## Testing
 
-Comprehensive integration tests cover form validation, async API validation, multi-step navigation, error handling, and data persistence. Run with `pnpm test`.
+The project uses two testing approaches:
+
+### Unit Tests (Direct Mocking)
+
+- **Location**: `*.test.tsx` files
+- **Approach**: Direct function mocking with Vitest (`vi.mock()`)
+- **Use Case**: Fast, focused component tests
+- **Example**: `OnboardingWizard.test.tsx`, `PersonalDetailsStep.test.tsx`
+
+### Integration Tests (MSW)
+
+- **Location**: `*.integration.test.tsx` files
+- **Approach**: MSW (Mock Service Worker) intercepts actual HTTP requests
+- **Use Case**: Testing full request/response cycle, axios interceptors, error handling
+- **Example**: `OnboardingWizard.integration.test.tsx`
+
+**Why Both?**
+
+- **Unit tests** are fast and test component behavior in isolation
+- **Integration tests** are more realistic and test the actual HTTP layer
+- Together they provide comprehensive coverage
+
+Run tests with:
+
+```bash
+pnpm test          # Watch mode
+pnpm test:run      # Single run
+```
 
 ## API Integration
 
